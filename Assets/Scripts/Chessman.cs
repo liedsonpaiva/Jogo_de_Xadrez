@@ -67,4 +67,66 @@ public class Chessman : MonoBehaviour
     {
         yBoard = y;
     }
+
+    private void OnMouseUp()
+    {
+        DestroyMovePlates();
+
+        InitiateMovePlates();
+    }
+
+    public void DestroyMovePlates()
+    {
+        GameObject[] movePlates = GameObject.FindGameObjectsWithTag("MovePlates");
+        for (int i = 0; i < movePlates.Length; i++)
+        {
+            Destroy(movePlates[i]); 
+        }
+    }
+
+    public void InitiateMovePlates()
+    {
+        switch (this.name)
+        {
+            case "black_queen":
+            case "white_queen":
+                LineMovePlate(1, 0);
+                LineMovePlate(0, 1);
+                LineMovePlate(1, 1);
+                LineMovePlate(-1, 0);
+                LineMovePlate(0, -1);
+                LineMovePlate(-1, -1);
+                LineMovePlate(-1, 1);
+                LineMovePlate(1, -1);
+                break;
+            case "black_knight":
+            case "white_knight":
+                LMovePlate();
+                break;
+            case "black_bishop":
+            case "white_bishop":
+                LineMovePlate(1, 1);
+                LineMovePlate(1, -1);
+                LineMovePlate(-1, 1);
+                LineMovePlate(-1, -1);
+                break;
+            case "black_king":
+            case "white_king":
+                SurroundMovePlate();
+                break;
+            case "black_rook":
+            case "white_rook":
+                LineMovePlate(1, 0);
+                LineMovePlate(0, 1);
+                LineMovePlate(-1, 0);
+                LineMovePlate(0, -1);
+                break;
+            case "black_pawn":
+                PawnMovePlate(xBoard, yBoard - 1);
+                break;
+            case "white_pawn": 
+                PawnMovePlate(xBoard, yBoard + 1);
+                break;
+        }
+    }
 }
