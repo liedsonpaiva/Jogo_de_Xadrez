@@ -65,7 +65,7 @@ public class Game : MonoBehaviour
         positions[x, y] = null;
     }
 
-    public GameObject GetPositions(int x, int y)
+    public GameObject GetPosition(int x, int y)
     {
         return positions[x, y];
     }
