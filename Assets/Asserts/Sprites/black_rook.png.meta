@@ -3,8 +3,8 @@ guid: c62374b32f55d5f418eaa71fb95130ab
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5468955912791914103
-    second: b_rook_1x_0
+      213: -7587791273309554880
+    second: black_rook_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: b_rook_1x_0
+      name: black_rook_0
       rect:
         serializedVersion: 2
-        x: 3
-        y: 3
-        width: 346
-        height: 378
+        x: 0
+        y: 0
+        width: 14
+        height: 18
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 98904c5b29d5a14b0800000000000000
-      internalID: -5468955912791914103
+      spriteID: 047339ce900c2b690800000000000000
+      internalID: -7587791273309554880
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      b_rook_1x_0: -5468955912791914103
+      black_rook_0: -7587791273309554880
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

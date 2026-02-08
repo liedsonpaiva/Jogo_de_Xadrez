@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6385631634701171994
+--- !u!1 &7006885213131234885
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,39 +8,40 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6887550090534660921}
-  - component: {fileID: 7863978400452686563}
-  - component: {fileID: 5456944469121101876}
+  - component: {fileID: 9179902897517632674}
+  - component: {fileID: 5011990849957115933}
+  - component: {fileID: 6946485908069256228}
+  - component: {fileID: -1826868284242095680}
   m_Layer: 0
-  m_Name: Chesspiece
+  m_Name: ChessPiece
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6887550090534660921
+--- !u!4 &9179902897517632674
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6385631634701171994}
+  m_GameObject: {fileID: 7006885213131234885}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.62, y: -4.114, z: -2}
-  m_LocalScale: {x: 0.25026003, y: 0.26251578, z: 1}
+  m_LocalPosition: {x: -0.999, y: -1.625, z: -2}
+  m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &7863978400452686563
+--- !u!212 &5011990849957115933
 SpriteRenderer:
   serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6385631634701171994}
+  m_GameObject: {fileID: 7006885213131234885}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -82,39 +83,85 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 2627935112374146259, guid: 4900459997608be46a4a06f0b3dd390d, type: 3}
+  m_Sprite: {fileID: -641104846605737351, guid: 4900459997608be46a4a06f0b3dd390d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 4.34, y: 4.38}
+  m_Size: {x: 0.2, y: 0.2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &5456944469121101876
+--- !u!114 &6946485908069256228
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6385631634701171994}
+  m_GameObject: {fileID: 7006885213131234885}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3ef443df498aa9045a9315196aa14742, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Chessman
   controller: {fileID: 0}
-  movePlate: {fileID: 0}
-  black_queen: {fileID: -7894471464916139628, guid: 5ab2ff66f226b8a4ab6f9d466c68f849, type: 3}
-  black_knight: {fileID: 6702331507871257524, guid: 211960f312d2dcd44abc9bafcd7dcf7d, type: 3}
-  black_bishop: {fileID: -5243761360094277896, guid: b5259b934e9186d4c9f5143c342aaa02, type: 3}
-  black_king: {fileID: 2627935112374146259, guid: 4900459997608be46a4a06f0b3dd390d, type: 3}
-  black_rook: {fileID: -5468955912791914103, guid: c62374b32f55d5f418eaa71fb95130ab, type: 3}
-  black_pawn: {fileID: -8483004102220922153, guid: 0bd96299d74b37949816bc6e35c1215c, type: 3}
-  white_queen: {fileID: -6927886093957542517, guid: cc4f70fecc8615447b7bb8830ce8772c, type: 3}
-  white_knight: {fileID: -4830087039057309723, guid: f34d29bac0bc8a14899f2dfb361114ab, type: 3}
-  white_bishop: {fileID: -6920587179898056996, guid: 0f25ac14cf563c94c83047a2c80496fb, type: 3}
-  white_king: {fileID: -5021420377320569161, guid: bee3628320ac1344c9a8222db9fe9fb5, type: 3}
-  white_rook: {fileID: -8461961984556485647, guid: 1dfe64c9c30351b428625ce284e4dde6, type: 3}
-  white_pawn: {fileID: -417347133267021387, guid: ec7824322c06ac94881b2676390ec211, type: 3}
+  movePlate: {fileID: 5560630301728766244, guid: f7f7dbd93bd29e34495339d8a9be54a8, type: 3}
+  black_queen: {fileID: -2628853326628446179, guid: 5ab2ff66f226b8a4ab6f9d466c68f849, type: 3}
+  black_knight: {fileID: -334450713805299198, guid: 211960f312d2dcd44abc9bafcd7dcf7d, type: 3}
+  black_bishop: {fileID: -6414592721767173361, guid: b5259b934e9186d4c9f5143c342aaa02, type: 3}
+  black_king: {fileID: -641104846605737351, guid: 4900459997608be46a4a06f0b3dd390d, type: 3}
+  black_rook: {fileID: -7587791273309554880, guid: c62374b32f55d5f418eaa71fb95130ab, type: 3}
+  black_pawn: {fileID: -4341603147912474925, guid: 0bd96299d74b37949816bc6e35c1215c, type: 3}
+  white_queen: {fileID: 7270707491364550308, guid: cc4f70fecc8615447b7bb8830ce8772c, type: 3}
+  white_knight: {fileID: 8769669200613306614, guid: f34d29bac0bc8a14899f2dfb361114ab, type: 3}
+  white_bishop: {fileID: 7560534232159598683, guid: 0f25ac14cf563c94c83047a2c80496fb, type: 3}
+  white_king: {fileID: -3792998861040722889, guid: bee3628320ac1344c9a8222db9fe9fb5, type: 3}
+  white_rook: {fileID: -8948728166497563328, guid: 1dfe64c9c30351b428625ce284e4dde6, type: 3}
+  white_pawn: {fileID: 5580225292014371162, guid: ec7824322c06ac94881b2676390ec211, type: 3}
+--- !u!61 &-1826868284242095680
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7006885213131234885}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.2, y: 0.2}
+    newSize: {x: 0.2, y: 0.2}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.2, y: 0.2}
+  m_EdgeRadius: 0

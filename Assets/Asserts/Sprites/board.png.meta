@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 479ab86982e3f844487a08ebf6781123
+guid: 0418963195603f24c8d725a72fed35fb
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -771581794264748477
-    second: square gray dark _1x_0
+      213: 1763014460331064234
+    second: board_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: square gray dark _1x_0
+      name: board_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 451
-        height: 451
+        width: 180
+        height: 180
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 34ee0b5327aca45f0800000000000000
-      internalID: -771581794264748477
+      spriteID: aabf8e19f4c777810800000000000000
+      internalID: 1763014460331064234
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      square gray dark _1x_0: -771581794264748477
+      board_0: 1763014460331064234
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
