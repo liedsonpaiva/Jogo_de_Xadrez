@@ -16,6 +16,8 @@ public class Chessman : MonoBehaviour
     // Variável para identificar a qual jogador a peça pertence ("black" ou "white")
     private string player;
 
+    public bool hasMoved = false;
+
     // Referências a todos os sprites possíveis que esta peça pode ter
     public Sprite black_queen, black_knight, black_bishop, black_king, black_rook, black_pawn;
     public Sprite white_queen, white_knight, white_bishop, white_king, white_rook, white_pawn;
@@ -97,6 +99,97 @@ public class Chessman : MonoBehaviour
         }
     }
 
+    bool IsSquareUnderAttack(int x, int y, string kingPlayer)
+    {
+        Game sc = controller.GetComponent<Game>();
+
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                GameObject piece = sc.GetPosition(i, j);
+                if (piece == null) continue;
+
+                Chessman cm = piece.GetComponent<Chessman>();
+
+                // só peças ADVERSÁRIAS
+                if (cm.player == kingPlayer) continue;
+
+                if (cm.CanAttackSquare(x, y))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public bool CanAttackSquare(int x, int y)
+    {
+        int dx = x - xBoard;
+        int dy = y - yBoard;
+
+        switch (name)
+        {
+            case "white_rook":
+            case "black_rook":
+                if (dx == 0 || dy == 0)
+                    return IsPathClear(x, y);
+                break;
+
+            case "white_bishop":
+            case "black_bishop":
+                if (Mathf.Abs(dx) == Mathf.Abs(dy))
+                    return IsPathClear(x, y);
+                break;
+
+            case "white_queen":
+            case "black_queen":
+                if (dx == 0 || dy == 0 || Mathf.Abs(dx) == Mathf.Abs(dy))
+                    return IsPathClear(x, y);
+                break;
+
+            case "white_knight":
+            case "black_knight":
+                return (Mathf.Abs(dx) == 2 && Mathf.Abs(dy) == 1) ||
+                       (Mathf.Abs(dx) == 1 && Mathf.Abs(dy) == 2);
+
+            case "white_king":
+            case "black_king":
+                return Mathf.Abs(dx) <= 1 && Mathf.Abs(dy) <= 1;
+
+            case "white_pawn":
+                return dy == 1 && Mathf.Abs(dx) == 1;
+
+            case "black_pawn":
+                return dy == -1 && Mathf.Abs(dx) == 1;
+        }
+        return false;
+    }
+
+    bool IsPathClear(int targetX, int targetY)
+    {
+        Game sc = controller.GetComponent<Game>();
+
+        int dx = targetX - xBoard;
+        int dy = targetY - yBoard;
+
+        int stepX = dx == 0 ? 0 : dx / Mathf.Abs(dx);
+        int stepY = dy == 0 ? 0 : dy / Mathf.Abs(dy);
+
+        int x = xBoard + stepX;
+        int y = yBoard + stepY;
+
+        while (x != targetX || y != targetY)
+        {
+            if (sc.GetPosition(x, y) != null)
+                return false;
+
+            x += stepX;
+            y += stepY;
+        }
+        return true;
+    }
+
+
     public void DestroyMovePlates()
     {
         // Destrói os MovePlates antigos
@@ -136,6 +229,7 @@ public class Chessman : MonoBehaviour
             case "black_king":
             case "white_king":
                 SurroundMovePlate();
+                CastleMovePlate();
                 break;
             case "black_rook":
             case "white_rook":
@@ -198,6 +292,52 @@ public class Chessman : MonoBehaviour
         PointMovePlate(xBoard + 1, yBoard + 1);
     }
 
+    public void CastleMovePlate()
+    {
+        if (hasMoved) return;
+
+        Game sc = controller.GetComponent<Game>();
+
+        if (IsSquareUnderAttack(xBoard, yBoard, player)) return;
+
+
+        int y = yBoard;
+
+        // ROQUE CURTO
+        GameObject rookShort = sc.GetPosition(7, y);
+
+        if (rookShort != null &&
+            rookShort.GetComponent<Chessman>().player == player &&
+            !rookShort.GetComponent<Chessman>().hasMoved &&
+            sc.GetPosition(5, y) == null &&
+            sc.GetPosition(6, y) == null)
+        {
+            if (!IsSquareUnderAttack(5, y, player) &&
+                !IsSquareUnderAttack(6, y, player))
+            {
+                MovePlateSpawn(6, y);
+            }
+        }
+
+
+            // ROQUE GRANDE
+            GameObject rookLong = sc.GetPosition(0, y);
+
+        if(rookLong != null &&
+            rookLong.GetComponent<Chessman>().player == player &&
+            !rookLong.GetComponent<Chessman>().hasMoved &&
+            sc.GetPosition(1, y) == null &&
+            sc.GetPosition(2, y) == null &&
+            sc.GetPosition(3, y) == null)
+        {
+            if (!IsSquareUnderAttack(3, y, player) &&
+                !IsSquareUnderAttack(2, y, player))
+            {
+                MovePlateSpawn(2, y);
+            }
+        }
+    }
+
     public void PointMovePlate(int x, int y)
     {
         Game sc = controller.GetComponent<Game>();
@@ -252,7 +392,6 @@ public class Chessman : MonoBehaviour
             MovePlateAttackSpawn(x - 1, y);
         }
     }
-
 
     public void MovePlateSpawn(int matrixX, int matrixY)
     {

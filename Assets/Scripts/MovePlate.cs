@@ -4,60 +4,113 @@ using UnityEngine;
 
 public class MovePlate : MonoBehaviour
 {
-    //Some functions will need reference to the controller
+    // Algumas funções precisarão de referência ao controlador do jogo
     public GameObject controller;
 
-    //The Chesspiece that was tapped to create this MovePlate
+    // A peça de xadrez que foi clicada para criar este MovePlate
     GameObject reference = null;
 
-    //Location on the board
+    // Localização no tabuleiro (matriz)
     int matrixX;
     int matrixY;
 
-    //false: movement, true: attacking
+    // false: movimento normal | true: ataque
     public bool attack = false;
 
     public void Start()
     {
         if (attack)
         {
-            //Set to red
-            gameObject.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+            // Define a cor vermelha para indicar ataque
+            gameObject.GetComponent<SpriteRenderer>().color =
+                new Color(1.0f, 0.0f, 0.0f, 1.0f);
         }
     }
 
     public void OnMouseUp()
     {
         controller = GameObject.FindGameObjectWithTag("GameController");
+        Chessman chessman = reference.GetComponent<Chessman>();
 
-        //Destroy the victim Chesspiece
+        // ATAQUE
         if (attack)
         {
-            GameObject cp = controller.GetComponent<Game>().GetPosition(matrixX, matrixY);
+            GameObject cp = controller.GetComponent<Game>()
+                                      .GetPosition(matrixX, matrixY);
 
-            if (cp.name == "white_king") controller.GetComponent<Game>().Winner("black");
-            if (cp.name == "black_king") controller.GetComponent<Game>().Winner("white");
+            if (cp.name == "white_king")
+                controller.GetComponent<Game>().Winner("black");
+
+            if (cp.name == "black_king")
+                controller.GetComponent<Game>().Winner("white");
 
             Destroy(cp);
         }
 
-        //Set the Chesspiece's original location to be empty
-        controller.GetComponent<Game>().SetPositionEmpty(reference.GetComponent<Chessman>().GetXBoard(),
-            reference.GetComponent<Chessman>().GetYBoard());
+        int startX = chessman.GetXBoard();
+        int startY = chessman.GetYBoard();
 
-        //Move reference chess piece to this position
-        reference.GetComponent<Chessman>().SetXBoard(matrixX);
-        reference.GetComponent<Chessman>().SetYBoard(matrixY);
-        reference.GetComponent<Chessman>().SetCoords();
+        // LIMPA A POSIÇÃO ANTIGA NO TABULEIRO
+        controller.GetComponent<Game>()
+                  .SetPositionEmpty(startX, startY);
 
-        //Update the matrix
+        // MOVE A PEÇA PARA A NOVA POSIÇÃO
+        chessman.SetXBoard(matrixX);
+        chessman.SetYBoard(matrixY);
+        chessman.SetCoords();
+        chessman.hasMoved = true;
+
+        // === ROQUE ===
+        bool isKing = chessman.name.Contains("king");
+        bool isCastle = Mathf.Abs(matrixX - startX) == 2;
+
+        if (isKing && isCastle)
+        {
+            // ROQUE CURTO
+            if (matrixX == 6)
+            {
+                GameObject rook = controller.GetComponent<Game>()
+                                            .GetPosition(7, startY);
+                Chessman rookMan = rook.GetComponent<Chessman>();
+
+                controller.GetComponent<Game>()
+                          .SetPositionEmpty(7, startY);
+
+                rookMan.SetXBoard(5);
+                rookMan.SetYBoard(startY);
+                rookMan.SetCoords();
+                rookMan.hasMoved = true;
+
+                controller.GetComponent<Game>().SetPosition(rook);
+            }
+
+            // ROQUE GRANDE
+            if (matrixX == 2)
+            {
+                GameObject rook = controller.GetComponent<Game>()
+                                            .GetPosition(0, startY);
+                Chessman rookMan = rook.GetComponent<Chessman>();
+
+                controller.GetComponent<Game>()
+                          .SetPositionEmpty(0, startY);
+
+                rookMan.SetXBoard(3);
+                rookMan.SetYBoard(startY);
+                rookMan.SetCoords();
+                rookMan.hasMoved = true;
+
+                controller.GetComponent<Game>().SetPosition(rook);
+            }
+        }
+
+        // ATUALIZA A MATRIZ COM A NOVA POSIÇÃO DA PEÇA
         controller.GetComponent<Game>().SetPosition(reference);
 
-        //Switch Current Player
+        // PASSA PARA O PRÓXIMO TURNO
         controller.GetComponent<Game>().NextTurn();
 
-        //Destroy the move plates including self
-        reference.GetComponent<Chessman>().DestroyMovePlates();
+        // REMOVE TODOS OS MOVEPLATES
+        chessman.DestroyMovePlates();
     }
 
     public void SetCoords(int x, int y)
