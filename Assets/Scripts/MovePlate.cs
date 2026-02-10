@@ -4,35 +4,39 @@ using UnityEngine;
 
 public class MovePlate : MonoBehaviour
 {
-    // Algumas funções precisarão de referência ao controlador do jogo
+    // Referência ao controlador do jogo
     public GameObject controller;
 
-    // A peça de xadrez que foi clicada para criar este MovePlate
+    // Peça de xadrez que originou este MovePlate
     GameObject reference = null;
 
-    // Localização no tabuleiro (matriz)
+    // Posição no tabuleiro (matriz)
     int matrixX;
     int matrixY;
 
-    // false: movimento normal | true: ataque
+    // false: movimento normal e true: ataque
     public bool attack = false;
 
-    public void Start()
+    void Start()
     {
         if (attack)
         {
-            // Define a cor vermelha para indicar ataque
+            // Cor vermelha para indicar ataque
             gameObject.GetComponent<SpriteRenderer>().color =
                 new Color(1.0f, 0.0f, 0.0f, 1.0f);
         }
     }
 
-    public void OnMouseUp()
+    void OnMouseUp()
     {
         controller = GameObject.FindGameObjectWithTag("GameController");
+
+        if (controller.GetComponent<Game>().waitingPromotion)
+            return;
+
         Chessman chessman = reference.GetComponent<Chessman>();
 
-        // ATAQUE
+        // === ATAQUE ===
         if (attack)
         {
             GameObject cp = controller.GetComponent<Game>()
@@ -50,11 +54,11 @@ public class MovePlate : MonoBehaviour
         int startX = chessman.GetXBoard();
         int startY = chessman.GetYBoard();
 
-        // LIMPA A POSIÇÃO ANTIGA NO TABULEIRO
+        // Limpa a posição antiga
         controller.GetComponent<Game>()
                   .SetPositionEmpty(startX, startY);
 
-        // MOVE A PEÇA PARA A NOVA POSIÇÃO
+        // Move a peça para a nova posição
         chessman.SetXBoard(matrixX);
         chessman.SetYBoard(matrixY);
         chessman.SetCoords();
@@ -66,7 +70,7 @@ public class MovePlate : MonoBehaviour
 
         if (isKing && isCastle)
         {
-            // ROQUE CURTO
+            // Roque curto
             if (matrixX == 6)
             {
                 GameObject rook = controller.GetComponent<Game>()
@@ -84,7 +88,7 @@ public class MovePlate : MonoBehaviour
                 controller.GetComponent<Game>().SetPosition(rook);
             }
 
-            // ROQUE GRANDE
+            // Roque grande
             if (matrixX == 2)
             {
                 GameObject rook = controller.GetComponent<Game>()
@@ -103,13 +107,27 @@ public class MovePlate : MonoBehaviour
             }
         }
 
-        // ATUALIZA A MATRIZ COM A NOVA POSIÇÃO DA PEÇA
+        // === PROMOÇÃO DO PEÃO (SUBSTITUIÇÃO) ===
+        bool isPawn = chessman.name.Contains("pawn");
+        bool promoteWhite = isPawn && chessman.player == "white" && matrixY == 7;
+        bool promoteBlack = isPawn && chessman.player == "black" && matrixY == 0;
+
+        if (promoteWhite || promoteBlack)
+        {
+            Destroy(reference);
+            controller.GetComponent<Game>()
+                      .StartPromotion(chessman.player, matrixX, matrixY);
+            chessman.DestroyMovePlates();
+            return;
+        }
+
+        // Atualiza a matriz com a nova posição
         controller.GetComponent<Game>().SetPosition(reference);
 
-        // PASSA PARA O PRÓXIMO TURNO
+        // Próximo turno
         controller.GetComponent<Game>().NextTurn();
 
-        // REMOVE TODOS OS MOVEPLATES
+        // Remove todos os MovePlates
         chessman.DestroyMovePlates();
     }
 

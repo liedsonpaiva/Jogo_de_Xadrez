@@ -14,7 +14,7 @@ public class Chessman : MonoBehaviour
     private int yBoard = -1;
 
     // Variável para identificar a qual jogador a peça pertence ("black" ou "white")
-    private string player;
+    public string player;
 
     public bool hasMoved = false;
 
@@ -88,8 +88,13 @@ public class Chessman : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (!controller.GetComponent<Game>().IsGameOver() &&
-            controller.GetComponent<Game>().GetCurrentPlayer() == player)
+
+        Game game = GameObject.FindGameObjectWithTag("GameController").GetComponent<Game>();
+
+        if (game.waitingPromotion)
+            return;
+
+        if (!controller.GetComponent<Game>().IsGameOver() && controller.GetComponent<Game>().GetCurrentPlayer() == player)
         {
             // Remove todos os MovePlates relacionados à peça selecionada anteriormente
             DestroyMovePlates();
@@ -166,29 +171,28 @@ public class Chessman : MonoBehaviour
     }
 
     bool IsPathClear(int targetX, int targetY)
+{
+    Game sc = controller.GetComponent<Game>();
+
+    int dx = targetX - xBoard;
+    int dy = targetY - yBoard;
+
+    int stepX = dx == 0 ? 0 : dx / Mathf.Abs(dx);
+    int stepY = dy == 0 ? 0 : dy / Mathf.Abs(dy);
+
+    int x = xBoard + stepX;
+    int y = yBoard + stepY;
+
+    while (x != targetX || y != targetY)
     {
-        Game sc = controller.GetComponent<Game>();
+        if (sc.GetPosition(x, y) != null)
+            return false;
 
-        int dx = targetX - xBoard;
-        int dy = targetY - yBoard;
-
-        int stepX = dx == 0 ? 0 : dx / Mathf.Abs(dx);
-        int stepY = dy == 0 ? 0 : dy / Mathf.Abs(dy);
-
-        int x = xBoard + stepX;
-        int y = yBoard + stepY;
-
-        while (x != targetX || y != targetY)
-        {
-            if (sc.GetPosition(x, y) != null)
-                return false;
-
-            x += stepX;
-            y += stepY;
-        }
-        return true;
+        x += stepX;
+        y += stepY;
     }
-
+    return true;
+}
 
     public void DestroyMovePlates()
     {

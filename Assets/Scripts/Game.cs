@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -8,6 +9,16 @@ public class Game : MonoBehaviour
 {
     // Referência definida pela Unity (Prefab da peça de xadrez)
     public GameObject chesspiece;
+
+    public GameObject white_queen, white_rook, white_bishop, white_knight;
+    public GameObject black_queen, black_rook, black_bishop, black_knight;
+
+    [HideInInspector] public bool waitingPromotion = false;
+    [HideInInspector] public string promotionPlayer;
+    [HideInInspector] public int promotionX;
+    [HideInInspector] public int promotionY;
+
+    public GameObject promotionUI;
 
     // Matrizes necessárias para armazenar as posições das peças no tabuleiro
     // Também existem arrays separados para cada jogador, facilitando o controle
@@ -57,6 +68,40 @@ public class Game : MonoBehaviour
         return obj;
     }
 
+    public void StartPromotion(string player, int x, int y)
+    {
+        waitingPromotion = true;
+        promotionPlayer = player;
+        promotionX = x;
+        promotionY = y;
+
+        promotionUI.SetActive(true);
+    }
+
+    public void Promote(string pieceName)
+    {
+        // Remove o peão da matriz
+        SetPositionEmpty(promotionX, promotionY);
+
+        // Cria nova peça usando o MESMO fluxo do jogo
+        string fullName = promotionPlayer + "_" + pieceName;
+
+        GameObject obj = Instantiate(chesspiece, Vector3.zero, Quaternion.identity);
+
+        Chessman cm = obj.GetComponent<Chessman>();
+        cm.name = fullName;
+        cm.SetXBoard(promotionX);
+        cm.SetYBoard(promotionY);
+        cm.hasMoved = true;
+        cm.Activate(); // ← ISSO É O PONTO CRÍTICO
+
+        SetPosition(obj);
+
+        promotionUI.SetActive(false);
+        waitingPromotion = false;
+
+        NextTurn();
+    }
     public void SetPosition(GameObject obj)
     {
         Chessman cm = obj.GetComponent<Chessman>();
@@ -123,7 +168,7 @@ public class Game : MonoBehaviour
 
         Text winnerText = GameObject.FindGameObjectWithTag("WinnerText").GetComponent<Text>();
         winnerText.enabled = true;
-        winnerText.text = vencedor + " venceram a partida";
+        winnerText.text = vencedor + " venceram!";
 
         GameObject.FindGameObjectWithTag("RestartText").GetComponent<Text>().enabled = true;
     }
